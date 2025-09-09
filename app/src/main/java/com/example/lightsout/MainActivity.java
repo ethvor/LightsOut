@@ -15,6 +15,36 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout grid;
     private boolean cellState [][];
 
+
+
+
+
+    View.OnClickListener buttonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Button current = (Button) v;
+            for (int i = 0; i < grid.getChildCount(); i++) {
+                Button gridButton = (Button) grid.getChildAt(i);
+                if(gridButton == current){
+                    int row = i / GRID_SIZE;
+                    int col = i % GRID_SIZE;
+
+                    if (cellState[row][col] == true){
+                        cellState[row][col] = false;
+                    }else{
+                        cellState[row][col] = true;
+                    }
+
+                }
+            }
+
+        recolor();
+        }
+
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
 //      randomize();
 
         recolor();
+
+        for (int i = 0; i < grid.getChildCount(); i++) {
+            Button currButton = (Button) grid.getChildAt(i);
+            currButton.setOnClickListener(buttonListener);
+
+        }
     }
 
     public void recolor(){

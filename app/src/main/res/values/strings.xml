@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">LightsOut</string>
     <string name="lights_ethan_v">Lights + Ethan</string>
+    <string name="score_str">Score: 0</string>
+    <string name="reset_str">Reset</string>
+    <string name="random_str">Randomize</string>
 </resources>

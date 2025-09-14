@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout grid;
     private boolean cellState [][];
 
+    private TextView score;
 
 
 
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                     int row = i / GRID_SIZE;
                     int col = i % GRID_SIZE;
 
-                    if (cellState[row][col] == true){
+                    if (cellState[row][col]){
                         cellState[row][col] = false;
                     }else{
                         cellState[row][col] = true;
@@ -40,9 +42,44 @@ public class MainActivity extends AppCompatActivity {
             }
 
         recolor();
+        int lightsOn = countLights();
+        String scoreString = "Score: " + lightsOn;
+        score.setText(scoreString);
         }
 
     };
+
+    View.OnClickListener resetListener = new View.OnClickListener(){
+        public void onClick(View v) {
+            for (int i = 0; i < GRID_SIZE; i++) {
+                for (int j = 0; j < GRID_SIZE; j++) {
+                    cellState[i][j] = false;
+                }
+            }
+            recolor();
+
+            int lightsOn = countLights();
+            String scoreString = "Score: " + lightsOn;
+            score.setText(scoreString);
+        }
+
+    };
+
+    View.OnClickListener randomListener = new View.OnClickListener() {
+        public void onClick(View v) {
+
+
+            randomize();
+            recolor();
+
+            int lightsOn = countLights();
+            String scoreString = "Score: " + lightsOn;
+            score.setText(scoreString);
+
+        }
+    };
+
+
 
 
     @Override
@@ -53,16 +90,29 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         grid = findViewById(R.id.light_grid);
+        score = findViewById(R.id.score_counter);
+
 
         randomize();
 
         recolor();
+
+        int lightsOn = countLights();
+        String scoreString = "Score: " + lightsOn;
+        score.setText(scoreString);
 
         for (int i = 0; i < grid.getChildCount(); i++) {
             Button currButton = (Button) grid.getChildAt(i);
             currButton.setOnClickListener(buttonListener);
 
         }
+
+        Button resetButton = findViewById(R.id.reset_button); //bind listeners to buttons
+        resetButton.setOnClickListener(resetListener);
+
+        Button randomizeButton = findViewById(R.id.random_button);
+        randomizeButton.setOnClickListener(randomListener);
+
     }
 
     public void recolor(){
@@ -90,6 +140,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public int countLights(){
+        int count = 0;
+        for (int i=0; i < GRID_SIZE; i++){
+            for (int j = 0; j < GRID_SIZE; j++){
+                if(cellState[i][j]) { //bool
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
 
 }
